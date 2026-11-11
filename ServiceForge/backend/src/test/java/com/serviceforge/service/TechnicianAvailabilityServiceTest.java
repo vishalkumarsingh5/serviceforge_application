@@ -51,6 +51,25 @@ class TechnicianAvailabilityServiceTest {
     }
 
     @Test
+    void rejectsABookingThatOverlapsAnExistingJobWithADifferentStartTime() {
+        LocalDateTime start = LocalDateTime.now().withHour(10).withMinute(0).withSecond(0).withNano(0);
+        LocalDateTime end = start.plusHours(2);
+        // Technician 1 has a seeded job from 09:00 to 11:00.
+
+        assertThrows(IllegalStateException.class, () -> service.bookJob(1L, "Conflicting Customer", start, end));
+    }
+
+    @Test
+    void allowsABookingThatStartsWhenAnExistingJobEnds() {
+        LocalDateTime start = LocalDateTime.now().withHour(11).withMinute(0).withSecond(0).withNano(0);
+        LocalDateTime end = start.plusHours(1);
+
+        Job job = service.bookJob(1L, "Next Customer", start, end);
+
+        assertEquals("Next Customer", job.getCustomerName());
+    }
+
+    @Test
     void throwsForAnUnknownTechnician() {
         LocalDateTime start = LocalDateTime.now().plusDays(1);
         LocalDateTime end = start.plusHours(1);

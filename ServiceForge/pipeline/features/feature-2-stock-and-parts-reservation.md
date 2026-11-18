@@ -11,3 +11,10 @@
 
 ## Artifacts this feature touches
 Filled in later by the developer and tester agents.
+
+## Human Review Notes
+Existing scheduled jobs are required.
+Quantities must be positive whole numbers.
+Reservations are all-or-nothing when stock is insufficient.
+Failed requests do not modify stock.
+Verified the existing 45-minute travel buffer decision remains unchanged.
